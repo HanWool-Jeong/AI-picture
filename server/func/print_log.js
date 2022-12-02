@@ -12,6 +12,6 @@ export default function print_log(ip, log) {
     var log = '[' + `${date.toLocaleString()}`.padStart(25, ' ') + ']' +
               '[' + `${ip}]`.padStart(16, ' ') +
               ' ' + log;
-    //fs.appendFile(log_name, log + '\n', err => { if (err) throw err; });
-    console.log(log);
+    fs.appendFile(log_name, log + '\n', err => { if (err) throw err; });
+    //console.log(log);
 }
