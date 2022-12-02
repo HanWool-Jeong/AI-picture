@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.css" integrity="sha512-C4k/QrN4udgZnXStNFS5osxdhVECWyhMsK1pnlk+LkC7yJGCqoYxW4mH3/ZXLweODyzolwdWSqmmadudSHMRLA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.js" integrity="sha512-LjPH94gotDTvKhoxqvR5xR2Nur8vO5RKelQmG52jlZo7SwI5WLYwDInPn1n8H9tR0zYqTqfNxWszUEy93cHHwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/compressorjs/1.1.1/compressor.js" integrity="sha512-Btm5puX6bn9/QrCZwqccKPINw6t9Ec1sEg+Y8yhW7aCAtFWvYJBOTC/UN87EZzc8TfJckA8zRf12Uv8D8Tdspg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <title>이미지를 이미지로</title>
+
+    <script>
+        window.onload = function() {
+            // 자주쓰는변수
+            const input_image = document.getElementById('input_image');
+            const send_image = document.getElementById('send_image');
+            const cut_image = document.getElementById('cut_image');
+            const h2 = document.querySelector('h2');
+            const cropper_options = {
+                aspectRatio: 1,
+                viewMode: 3,
+                preview: '#upload_preview'
+            };
+            const selected_view = document.getElementById('selected_view');
+            const upload_view = document.getElementById("upload_view");
+            const cropper = new Cropper(upload_view, cropper_options);
+
+            // 사진업로드
+            function load_file() {
+                const file = input_image.files[0]
+                const url = URL.createObjectURL(file);
+                document.getElementById('selected_view').src = url;
+                cut_image.disabled = false;
+                send_image.disabled = true;
+                h2.innerHTML = "사진을 잘라야 합니다. 사진자르기를 누르세요";
+            }
+            input_image.addEventListener('change', load_file);
+
+            // 모달
+            function show_modal(e) {
+                // 모달 띄우기
+                const modal = document.getElementById('modal_background');
+                modal.style.display = 'block';
+
+                // 모달 뜨면 스크롤 막기
+                const body = document.querySelector('body');
+                body.style.overflow = 'hidden';
+                body.style.height = '100%';
+                
+                // 모달 끄는 버튼 달기
+                modal.querySelector('#close').addEventListener('click', (e) => {
+                    modal.style.display = "none";
+                })
+                
+                // 자르는 버튼
+                modal.querySelector('#crop_button').addEventListener('click', (e) => {
+                    const cropped = cropper.getCroppedCanvas();
+                    cropped.toBlob(blob => {
+                        selected_view.src = URL.createObjectURL(blob)
+                        modal.style.display = "none";
+                        send_image.disabled = false;
+                        h2.innerHTML = "사진 잘랐으면 보내기!! 버튼으로 AI에게 전송합니다."
+                    });
+                });
+                
+                // 모달 안에 사진 cropper 넣기
+                const file = input_image.files[0]
+                const url = URL.createObjectURL(file);
+                cropper.replace(url);
+            }
+            cut_image.addEventListener('click', show_modal);
+
+            // 사진 AI한테 보내기
+            function get_file() {
+                // 요청 계속하는거 막기 위해 button disable
+                input_image.disabled = true;
+                send_image.disabled = true;
+                cut_image.disabled = true;
+
+                // 자른 사진 url을 blob으로 만들기
+                fetch(selected_view.src).then(res => res.blob()).then((blob) => {
+                    // 압축하기
+                    h2.innerHTML = "자른 사진 압축 중..";
+                    new Compressor(blob, { 
+                        maxWidth: 1024,
+                        maxHeight: 1024,
+                        mimeType: 'image/png',
+                        convertSize: Infinity,
+                        quality: 0.6,
+                        success: function(blob) { 
+                            // 압축한 사진 보내기
+                            h2.innerHTML = "압축한 사진 보내는 중.."
+
+                            // 폼 이름이 서버에서 받는 폼 이름이랑 같아야됨!!!!!
+                            const formdata = new FormData();
+                            formdata.append('input_image', blob);
+
+                            const url = '/index/img2img/upload';
+                            const data = { method: "POST", body: formdata };
+
+                            fetch(url, data)
+                                .then((res) => {
+                                    if (res.status === 200) {
+                                        return res.json();
+                                    } else {
+                                        h2.innerHTML = "사진 전송에 실패했습니다..";
+                                        throw(new Error("fetch중 오류"));
+                                    }
+                                })
+                                .then((json_data) => {
+                                    if (json_data.url != null) {
+                                        //console.log("fetch 잘된듯?");
+                                        //console.log(json_data);
+                                        // 결과 이미지 출력
+                                        h2.innerHTML = "AI가 만든사진 출력 중..";
+                                        const result_view = document.getElementById("result_view");
+                                        result_view.src = json_data.url;
+                                    } else {
+                                        throw(new Error("url 이상함"));
+                                        h2.innerHTML = "사진 전송에 실패했습니다..";
+                                    }
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                })
+                                .finally(() => {
+                                    input_image.disabled = false;
+                                    send_image.disabled = false;
+                                    cut_image.disabled = false;
+                                }); // end of fetch
+                        }, // end of success
+                        error: function(err) { console.log(err, '압축 중 오류'); }
+                    });
+                }); // end of fetch (blob)
+            } // end of get_file
+            send_image.addEventListener('click', get_file);
+            
+            // 초기화작업
+            input_image.value="";
+            cut_image.disabled = true;
+            send_image.disabled = true;
+        };
+    </script>
+
+    <link href="/style/index.css" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>AI 그림을 만들어보자</h1>
+    
+    <input id="input_image" type="file" accept="image/*">
+    <input id="cut_image" type="button" value="사진자르기" disabled=true>
+    <input id="send_image" type="submit" value="보내기!!" disabled=true>
+    
+    <h2>사진을 선택하세요</h2>
+    <img id="selected_view" class="view" src="">
+    <img id="result_view" class="view" src="">
+
+    <div id="modal_background">
+        <div id="modal_body">
+            <div id="title_bar">
+                <span>사진을 잘라주세요</span>
+                <span id="close">X</span>
+            </div>
+            <div id="upload_container">
+                <div id="upload_view_container" class="view">
+                    <img id="upload_view" src="">
+                </div>
+                <input id="crop_button" type="button" value="자르기!">
+            </div> 
+        </div>
+    </div>
+</body>
+
+</html>
