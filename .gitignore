@@ -105,3 +105,6 @@ dist
 
 # 테스트용 이미지 파일
 images/
+*.jpeg
+*.jpg
+*.png
