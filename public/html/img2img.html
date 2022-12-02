@@ -19,6 +19,7 @@
             const send_image = document.getElementById('send_image');
             const cut_image = document.getElementById('cut_image');
             const h2 = document.querySelector('h2');
+            const result_view = document.getElementById("result_view");
             const cropper_options = {
                 aspectRatio: 1,
                 viewMode: 3,
@@ -79,6 +80,7 @@
                 input_image.disabled = true;
                 send_image.disabled = true;
                 cut_image.disabled = true;
+                result_view.src = "";
 
                 // 자른 사진 url을 blob으로 만들기
                 fetch(selected_view.src).then(res => res.blob()).then((blob) => {
@@ -107,7 +109,7 @@
                                         return res.json();
                                     } else {
                                         h2.innerHTML = "사진 전송에 실패했습니다..";
-                                        throw(new Error("fetch중 오류"));
+                                        throw(new Error("fetch중 오류(image variations)"));
                                     }
                                 })
                                 .then((json_data) => {
@@ -116,10 +118,9 @@
                                         //console.log(json_data);
                                         // 결과 이미지 출력
                                         h2.innerHTML = "AI가 만든사진 출력 중..";
-                                        const result_view = document.getElementById("result_view");
                                         result_view.src = json_data.url;
                                     } else {
-                                        throw(new Error("url 이상함"));
+                                        throw(new Error("url 이상함(image variation)"));
                                         h2.innerHTML = "사진 전송에 실패했습니다..";
                                     }
                                 })

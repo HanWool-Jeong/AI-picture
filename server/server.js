@@ -7,7 +7,7 @@ const app = express();
 // 내가만든 함수들
 import print_log from "./func/print_log.js";
 import index_router from './router/index_router.js';
-import text2text_router from "./router/text2img_router.js";
+import text2img_router from "./router/text2img_router.js";
 import img2img_router from "./router/img2img_router.js";
 
 app.get('/', function(req, res) {
@@ -17,13 +17,19 @@ app.get('/', function(req, res) {
 
 // 정적 파일 제공
 app.use(express.static(project_dir + '/public'));
+app.use(express.static(project_dir + '/generations'));
 
 app.use('/index', index_router);
-app.use('/index/text2text', text2text_router);
+app.use('/index/text2img', text2img_router);
 app.use('/index/img2img', img2img_router);
 
 // ipv4 노출 (apache 키고 사용하자!!)
 app.set('trust proxy', true);
+
+// json 파싱
+//app.use(express.urlencoded({
+//    extended: true
+//}));
 
 app.all('*', function(req, res) {
     print_log(req.ip, '이상한데로 들어옴: ' + req.originalUrl);

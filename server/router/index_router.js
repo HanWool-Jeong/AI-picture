@@ -6,6 +6,7 @@ import express from 'express';
 
 const index_router = express.Router();
 
+// 루트 url /index
 index_router
     .get('/', function(req, res) {
         print_log(req.ip, '접속함: ' + req.originalUrl);

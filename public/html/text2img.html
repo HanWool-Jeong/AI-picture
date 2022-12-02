@@ -9,13 +9,93 @@
 
     <title>텍스트를 이미지로</title>
 
+    <script>
+        window.onload = function() {
+            // 자주쓰는 변수
+            const h2 = document.querySelector("h2");
+            const prompt_input = document.getElementById("prompt_input");
+            const submit_button = document.getElementById("submit_button");
+            const download_button = document.getElementById("download_button");
+            const download_a = document.getElementById("download_a");
+            const result_view = document.getElementById("result_view");
+            var image_name = "";
+            
+            // 입력한 텍스트에 따른 ai사진 가져오기
+            function generate_image() {
+                var str = prompt_input.value;
+                str = str.trim(); 
+
+                if (str.length === 0) {
+                    alert("비워 놓지 마라");
+                    return;
+                }
+
+                h2.innerHTML = "사진 생성 시작";
+                submit_button.disabled = true;
+                download_button.style.display = 'none';
+                result_view.src = "";
+                
+                const url = '/index/text2img/generate';
+                const data = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', },
+                    body: JSON.stringify({ prompt: str })
+                };
+
+                fetch(url, data)
+                    .then((res) => {
+                        if (res.status === 200) {
+                            return res.json();
+                        } else {
+                            h2.innerHTML = "사진 생성에 실패했습니다..";
+                            throw(new Error("fetch중 오류(image generation)"));
+                        }
+                    })
+                    .then((json_data) => {
+                        if (json_data.url != null) {
+                            //console.log("fetch 잘된듯?");
+                            //console.log(json_data);
+                            // 결과 이미지 출력
+                            h2.innerHTML = "AI가 만든사진 출력 중..";
+                            result_view.src = json_data.url;
+                            image_name = json_data.name;
+                        } else {
+                            throw(new Error("url 이상함(image generation)"));
+                            h2.innerHTML = "사진 생성에 실패했습니다..";
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+                    .finally(() => {
+                        submit_button.disabled = false;
+                        download_button.style.display = 'inline';
+                    }); // end of fetch
+            }
+            submit_button.addEventListener("click", generate_image);
+
+            function download_image() {
+                alert("새끼.. 기합!");
+                download_a.href = '/' + image_name;
+            }
+            download_button.addEventListener("click", download_image);
+        };
+    </script>
+
     <link href="/style/global.css" rel="stylesheet" />
+    <link href="/style/text2img.css" rel="stylesheet" />
 </head>
 <body>
     <a id="prev_button" href="/index">뒤로가기</a>
+
     <h1>AI 그림을 만들어보자</h1>
-    <h2>공사 중 입니다..</h2>
-    <input type="text">
+    <h2>안에 텍스트를 넣고 보내기 (꼭 영어로 치삼!!!!)</h2>
+
+    <input id="prompt_input" type="text">
+    <input id="submit_button" type="button" value="생성하기!">
+
+    <a id="download_a" href="" download="기합찬사진"><input id="download_button" type="submit" value="긴빠이치기"></a>
     
+    <img id="result_view">
 </body>
 </html>

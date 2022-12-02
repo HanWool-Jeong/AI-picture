@@ -1,0 +1,23 @@
+/**
+    text2img.html에 적용되는 css
+*/
+
+#prompt_input {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: 50%;
+}
+#prompt_input {
+    text-align: center;
+}
+#download_button {
+    display: none;
+}
+#result_view {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+    width: 30%;
+    height: 30%;
+}

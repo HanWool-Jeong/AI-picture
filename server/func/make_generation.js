@@ -1,29 +1,27 @@
 import { project_dir } from '../global_variables.js';
 
 import dotenv from 'dotenv';
-import fs from 'fs';
 import { Configuration, OpenAIApi } from "openai";
 
 dotenv.config({ path : `${project_dir}/.env` });
 
 /**
- * AI가 사진 variation을 만들어주는 함수
- * @param {string} path AI에게 보낼 사진 경로 
- * @returns variation사진 url
+ * prompt 내용대로 이미지를 만들어주는 함수
+ * @param {string} prompt_input 
+ * @returns {Promise} 이미지 url을 담고 있는 Promise 객체
  */
-export default async function make_variation(path) {
+export default async function make_generation(prompt_input) {
     const configuration = new Configuration({
         apiKey: process.env.OPENAI_API_KEY,
     });
 
     const openai = new OpenAIApi(configuration);
 
-    const response = await openai.createImageVariation(
-        fs.createReadStream(path),
-        1,
-        "1024x1024"
-    );
-    
-    // url 반환
+    const response = await openai.createImage({
+        prompt: prompt_input,
+        n: 1,
+        size: "1024x1024",
+    });
+
     return response.data.data[0].url;
 }
