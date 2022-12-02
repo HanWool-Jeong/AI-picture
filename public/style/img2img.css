@@ -1,9 +1,7 @@
 /**
-    index.html의 css
+    img2img.html의 css
 */
-body {
-    text-align: center;
-}
+
 #input_image {
     border: 1px solid #ccc;
     border-radius: 5px;

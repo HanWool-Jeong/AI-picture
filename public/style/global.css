@@ -1,0 +1,11 @@
+/**
+모든 페이지에 global하게 적용되어야 하는 css
+*/
+
+body {
+    text-align: center;
+    font-family: sans-serif;
+}
+#prev_button {
+    display: block;
+}
