@@ -1,4 +1,4 @@
-import { project_dir, log_name } from './global_variables.js';
+import { project_dir } from './global_variables.js';
 
 // 서버 프레임워크 모듈
 import express from 'express';
