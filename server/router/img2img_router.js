@@ -1,4 +1,4 @@
-import { project_dir, log_name } from '../global_variables.js';
+import { project_dir } from '../global_variables.js';
 
 import print_log from '../func/print_log.js';
 import make_variation from '../func/make_variation.js'

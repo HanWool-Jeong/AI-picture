@@ -26,11 +26,6 @@ app.use('/index/img2img', img2img_router);
 // ipv4 노출 (apache 키고 사용하자!!)
 app.set('trust proxy', true);
 
-// json 파싱
-//app.use(express.urlencoded({
-//    extended: true
-//}));
-
 app.all('*', function(req, res) {
     print_log(req.ip, '이상한데로 들어옴: ' + req.originalUrl);
     res.status(404).sendFile(project_dir + "/public/html/not_found.html");
