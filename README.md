@@ -23,4 +23,4 @@ AI가 생성한 사진이 출력된다. 클라이언트 input을 서버로 전�
 <img src="readme_images/img2img_cropped.PNG" width='50%' height='50%'><br>
 자신이 자른 사진이 출력된다. 이제 '보내기!!'버튼을 누르자.<br><br><br><br>
 <img src="readme_images/img2img_result.PNG" width='50%' height='50%'><br>
-그럼 OpenAI가 생성한 사진이 옆에 출력된다. 이때, 4MB이하 정사각형 PNG 사진만 인식할 수 있기 때문에 [compressorjs](https://github.com/fengyuanchen/compressorjs)를 이용하여 이미지를 압축한다. 실험결과, 이미지 품질을 원본대비 60%로 압축하였더니 수천만화소의 핸드폰 카메라 사진도 4MB를 넘지 않았다.<br><br><br><br>
+그럼 OpenAI가 생성한 사진이 옆에 출력된다. 이때, 4MB이하 정사각형 PNG 사진만 인식할 수 있기 때문에 [compressorjs](https://github.com/fengyuanchen/compressorjs)를 이용하여 이미지를 압축한다. 실험결과, 이미지 품질을 원본대비 60%로 압축하였더니 수천만화소의 핸드폰 카메라 사진도 4MB를 넘지 않았다. 그리고 canvas의 toBlob()을 이용하면 PNG blob을 생성할 수 있다.<br><br><br><br>
