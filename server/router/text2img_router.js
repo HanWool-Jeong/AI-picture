@@ -20,7 +20,7 @@ router
     .post('/generate', function(req, res, next) {
         const { prompt } = req.body;
 
-        print_log(req.ip, 'generation 요청');
+        print_log(req.ip, `generation 요청 (prompt: ${prompt})`);
 
         // prompt 한글->영어로 번역하기
         papago_translate(prompt)
