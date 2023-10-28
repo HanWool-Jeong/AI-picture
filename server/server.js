@@ -31,7 +31,7 @@ app.all('*', function(req, res) {
     res.status(404).sendFile(project_dir + "/public/html/not_found.html");
 });
 
-const port = 3000;
+const port = 46137;
 const ip = 'localhost';
 app.listen(port, '0.0.0.0', function() {
     print_log(`${ip}:${port}`, '서버 가동중..');
