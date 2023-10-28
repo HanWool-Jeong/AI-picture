@@ -9,9 +9,9 @@ AI 그림 만들기 사이트 프로젝트 입니다.
 ![text2img](readme_images/text2img.PNG)<br>
 메인화면에서 '텍스트를 이미지로'를 눌렀을 때 이동하는 화면이다. 빈 칸에 텍스트를 넣고 생성하기를 누르면..<br><br><br><br>
 <img src="readme_images/text2img_result.PNG" width='50%' height='50%'><br>
-AI가 생성한 사진이 출력된다. 클라이언트 input을 서버로 전송하면 input을 [네이버 파파고 API](https://developers.naver.com/docs/papago/papago-nmt-overview.md)를 통해 번역하고 [OpenAI의 image generation API](https://beta.openai.com/docs/api-reference/images/create)를 통해 이미지를 생성, 저장해서 클라이언트에게 출력해준다. 파파고로 번역하는 이유는 OpenAI의 한국어 인식이 좋지 않기 때문이다. 이후 새로 생긴 '긴빠이치기'버튼을 클릭하면..<br><br><br><br>
+AI가 생성한 사진이 출력된다. 클라이언트 input을 서버로 전송하면 input을 [네이버 파파고 API](https://developers.naver.com/docs/papago/papago-nmt-overview.md)를 통해 번역하고 [OpenAI의 image generation API](https://beta.openai.com/docs/api-reference/images/create)를 통해 이미지를 생성, 저장해서 클라이언트에게 출력해준다. 파파고로 번역하는 이유는 OpenAI의 한국어 인식이 좋지 않기 때문이다. 이후 새로 생긴 '사진다운로드'버튼을 클릭하면..<br><br><br><br>
 ![text2img_download](readme_images/text2img_download.PNG)<br>
-'기합찬사진.png'가 다운로드 된다!<br><br><br><br>
+'사진.png'가 다운로드 된다!<br><br><br><br>
 
 ## '이미지를 이미지로'화면
 ![img2img](readme_images/img2img.PNG)<br>
