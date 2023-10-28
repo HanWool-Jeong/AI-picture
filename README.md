@@ -1,5 +1,6 @@
 # AI-picture
 AI 그림 만들기 사이트 프로젝트 입니다.
+여기서 체험해보실 수 있습니다. [hanwool.xyz:46137](http://hanwool.xyz:46137/index)
 
 ## 메인화면
 ![index](readme_images/index.PNG)<br>
