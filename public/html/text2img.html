@@ -26,7 +26,7 @@
                 str = str.trim(); 
 
                 if (str.length === 0) {
-                    alert("비워 놓지 마라");
+                    alert("텍스트 입력칸을 비워 놓을 수 없습니다!");
                     return;
                 }
 
@@ -75,7 +75,7 @@
             submit_button.addEventListener("click", generate_image);
 
             function download_image() {
-                alert("새끼.. 기합!");
+                alert("다운로드 중입니다.");
                 download_a.href = '/' + image_name;
             }
             download_button.addEventListener("click", download_image);
@@ -94,7 +94,7 @@
     <input id="prompt_input" type="text">
     <input id="submit_button" type="button" value="생성하기!">
 
-    <a id="download_a" href="" download="기합찬사진"><input id="download_button" type="submit" value="긴빠이치기"></a>
+    <a id="download_a" href="" download="사진"><input id="download_button" type="submit" value="사진 다운로드"></a>
     
     <img id="result_view">
 </body>
