@@ -1,4 +1,5 @@
 import { project_dir } from '../global_variables.js';
+import fetch from "node-fetch";
 
 import dotenv from 'dotenv';
 
