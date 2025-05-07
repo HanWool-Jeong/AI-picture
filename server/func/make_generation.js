@@ -21,6 +21,7 @@ export default async function make_generation(prompt_input) {
         prompt: prompt_input,
         n: 1,
         size: "1024x1024",
+        model: "dall-e-3"
     });
 
     return response.data.data[0].url;
